@@ -31,8 +31,8 @@ from telegram.ext import (
 # ============== SOZLAMALAR ==============
 import os
 BOT_TOKEN = os.environ.get("8544782058:AAEfzIJqJ9GL-OyU-tQgVYt8jD1D5dIGr9k")
-ADMIN_GROUP_ID = int(os.environ.get("ADMIN_GROUP_ID"))
-ADMIN_GROUP_ID = -1001234567890        # Admin guruh ID (manfiy son, pastda qanday topish yozilgan)
+ADMIN_GROUP_ID = int(os.environ.get("-4399895088"))
+ADMIN_GROUP_ID = -4399895088        # Admin guruh ID (manfiy son, pastda qanday topish yozilgan)
 DB_PATH = "beruniy_taxi.db"
 
 logging.basicConfig(
