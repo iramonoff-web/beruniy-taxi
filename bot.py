@@ -30,8 +30,8 @@ from telegram.ext import (
 
 # ============== SOZLAMALAR ==============
 import os
-BOT_TOKEN = os.environ.get("8544782058:AAEfzIJqJ9GL-OyU-tQgVYt8jD1D5dIGr9k")
-ADMIN_GROUP_ID = int(os.environ.get("-4399895088"))
+BOT_TOKEN = ("8544782058:AAEfzIJqJ9GL-OyU-tQgVYt8jD1D5dIGr9k")
+ADMIN_GROUP_ID = ("-4399895088")
 DB_PATH = "beruniy_taxi.db"
 
 logging.basicConfig(
