@@ -29,7 +29,9 @@ from telegram.ext import (
 )
 
 # ============== SOZLAMALAR ==============
-BOT_TOKEN = "ВАШ_BOT_TOKEN_BU_YERGA"   # @BotFather dan olingan token
+import os
+BOT_TOKEN = os.environ.get("8544782058:AAEfzIJqJ9GL-OyU-tQgVYt8jD1D5dIGr9k")
+ADMIN_GROUP_ID = int(os.environ.get("ADMIN_GROUP_ID"))
 ADMIN_GROUP_ID = -1001234567890        # Admin guruh ID (manfiy son, pastda qanday topish yozilgan)
 DB_PATH = "beruniy_taxi.db"
 
