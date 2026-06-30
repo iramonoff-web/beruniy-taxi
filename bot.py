@@ -101,19 +101,28 @@ def phone_keyboard():
 
 # ============== HANDLERLAR ==============
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
+    # Bu funksiya ham /start buyrug'idan, ham "Yangi buyurtma berish" tugmasidan chaqirilishi mumkin
+    query = update.callback_query
+    if query:
+        await query.answer()
+        user_id = query.from_user.id
+        send = query.message.reply_text
+    else:
+        user_id = update.effective_user.id
+        send = update.message.reply_text
+
     saved_phone = get_saved_phone(user_id)
 
     if saved_phone:
         context.user_data["phone"] = saved_phone
-        await update.message.reply_text(
+        await send(
             "Assalomu alaykum! Beruniy Taxi 1221 botiga xush kelibsiz.\n\n"
             "Qayerga taksi kerak? Lokatsiya yuboring yoki manzilni matn ko'rinishida yozing.",
             reply_markup=location_keyboard(),
         )
         return LOCATION
     else:
-        await update.message.reply_text(
+        await send(
             "Assalomu alaykum! Beruniy Taxi 1221 botiga xush kelibsiz.\n\n"
             "Avval telefon raqamingizni yuboring (keyingi buyurtmalarda so'ralmaydi).",
             reply_markup=phone_keyboard(),
@@ -247,9 +256,14 @@ async def admin_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.warning(f"Edit message error: {e}")
 
-    # Mijozga xabar yuborish
+    # Mijozga xabar yuborish + "Yangi buyurtma" tugmasi
+    new_order_keyboard = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("🚖 Yangi buyurtma berish", callback_data="new_order")]]
+    )
     try:
-        await context.bot.send_message(chat_id=user_id, text=client_text)
+        await context.bot.send_message(
+            chat_id=user_id, text=client_text, reply_markup=new_order_keyboard
+        )
     except Exception as e:
         logger.warning(f"Mijozga xabar yuborib bo'lmadi: {e}")
 
@@ -266,7 +280,10 @@ def main():
     app = Application.builder().token(BOT_TOKEN).build()
 
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("start", start)],
+        entry_points=[
+            CommandHandler("start", start),
+            CallbackQueryHandler(start, pattern="^new_order$"),
+        ],
         states={
             PHONE: [
                 MessageHandler(filters.CONTACT, phone_handler),
